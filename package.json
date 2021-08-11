@@ -1,6 +1,6 @@
 {
   "name": "express-file-based",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "File routing system-based framework like api serverless for Node Express",
   "author": "Matheus Correa",
   "repository": "mathec-x/express-router-framework",
