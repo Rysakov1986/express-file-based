@@ -9,13 +9,17 @@ const defaultOptions: IOptions = {
   methodExports: []
 }
 
-const router = Router();
 export const fileBased = (opts: IOptions = defaultOptions) => {
+        const router = Router();
         if(defaultOptions.directory !== opts.directory){
           opts.directory = path.join(path.dirname(require.main.filename), opts.directory)
         }
 
         const options = { ...defaultOptions, ...opts }
+
+        if(process.env.NODE_ENV === 'development'){
+          console.log('[create router options]',options);
+        }
 
         const files = walk(options.directory)
         const routes = generateRoutes(files)
