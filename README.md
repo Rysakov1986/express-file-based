@@ -13,8 +13,8 @@ npm install express-file-based
 - app.(js|ts) (main)
 
 ```js
-import express from "express"
-import fileBased from "express-file-based"
+const express = require("express")
+const { fileBased } = require("express-file-based")
 
 const app = express()
 app.use('/', fileBased()) // uses /routes directory by default
@@ -24,7 +24,7 @@ app.listen(2000)
 - routes/index.js
 
 ```js
-export default async (req, res) => {
+module.exports = async (req, res) => {
   if (req.method !== "GET") return res.status(404)
 
   return res.status(200)
@@ -75,15 +75,15 @@ app.use('/api', fileBased({
 If you export functions named e.g. `get`, `post`, `put`, `delete`/`del` [etc.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) those will get matched their corresponding http method automatically.
 
 ```js
-export const get = async (req, res) => { ... }
+module.exports.get = async (req, res) => { ... }
 
-export const post = async (req, res) => { ... }
+module.exports.post = async (req, res) => { ... }
 
 // it's not allowed to name variables 'delete': try 'del' instead
-export const del = async (req, res) => { ... }
+module.exports.del = async (req, res) => { ... }
 
 // you can still use a wildcard default export in addition
-export default async (req, res) => { ... }
+module.exports = async (req, res) => { ... }
 ```
 
 **Note:** Named method exports gain priority over wildcard exports (= default exports).
@@ -93,9 +93,9 @@ export default async (req, res) => { ... }
 You can add isolated, route specific middlewares by exporting an array of Express request handlers from your route file.
 
 ```js
-import { withAuth } from "../middlewares"
+const { withAuth } = require("../middlewares")
 
-export const get = [
+module.exports.get = [
   withAuth,
   async (req, res) => { ... }
 ]
