@@ -75,15 +75,27 @@ app.use('/api', fileBased({
 If you export functions named e.g. `get`, `post`, `put`, `delete`/`del` [etc.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) those will get matched their corresponding http method automatically.
 
 ```js
-module.exports.get = async (req, res) => { ... }
+/**
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ */module.exports.get = async (req, res) => { ... }
 
-module.exports.post = async (req, res) => { ... }
+/**
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ */module.exports.post = async (req, res) => { ... }
 
-// it's not allowed to name variables 'delete': try 'del' instead
-module.exports.del = async (req, res) => { ... }
+/**
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * it's not allowed to name variables 'delete': try 'del' instead
+ */module.exports.del = async (req, res) => { ... }
 
-// you can still use a wildcard default export in addition
-module.exports = async (req, res) => { ... }
+/**
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * you can still use a wildcard default export in addition
+ */module.exports = async (req, res) => { ... }
 ```
 
 **Note:** Named method exports gain priority over wildcard exports (= default exports).
