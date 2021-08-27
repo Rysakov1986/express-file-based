@@ -8,7 +8,7 @@ import type { IFileResult, IRoute } from "./types"
 const regBackets = /\[([^}]*)\]/g;
 
 const setBrackets = (x: string) => {
-    return regBackets.test(x) ? x.replace(regBackets, (_, s) => `:${s}`) : x
+  return regBackets.test(x) ? x.replace(regBackets, (_, s) => `:${s}`) : x
 }
 
 export const walk = (directory: string, relative: string[] = [""]) => {
@@ -31,7 +31,7 @@ export const walk = (directory: string, relative: string[] = [""]) => {
     }
   }
 
-  return results.sort((p,n) => p.path.length - n.path.length)
+  return results.sort((p, n) => p.path.length - n.path.length)
 }
 
 export const generateRoutes = (files: IFileResult[]) => {
@@ -43,14 +43,17 @@ export const generateRoutes = (files: IFileResult[]) => {
     if (!config.VALID_FILE_EXTENSIONS.includes(parsed.ext.toLocaleLowerCase()))
       continue
 
+    if (parsed.name.startsWith('_') || parsed.dir.startsWith('/_'))
+      continue
+
     const dir = parsed.dir === "/" ? "" : parsed.dir
     const name = parsed.name.startsWith("index.")
       ? parsed.name.replace("index", "")
       : parsed.name === "index"
-      ? "/"
-      : "/" + parsed.name
+        ? "/"
+        : "/" + parsed.name
 
-      
+
     const url = setBrackets(dir) + setBrackets(name)
     const exported = require(path.join(file.path, file.name))
     routes.push({ url, exported })
