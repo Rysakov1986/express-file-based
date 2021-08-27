@@ -19,4 +19,5 @@ export interface IRoute {
 export interface IOptions {
   directory?: string
   methodExports?: string[]
+  verbose?: boolean
 }

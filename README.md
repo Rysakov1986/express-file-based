@@ -41,7 +41,7 @@ Files inside your project's `/routes` directory will get matched an url path aut
     ├── index.js
     ├── posts
         ├── index.js
-        └── :id.js // dynamic req.params.id
+        └── :id.js or [id].js // dynamic req.params.id
     └── users.js
 └── package.json
 ```
