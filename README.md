@@ -67,6 +67,8 @@ app.use('/api', fileBased({
 
 - `directory`: The path to the routes directory (default /routes)
 - `methodExports`: Additional method exports (e.g. `ws` for express-ws)
+- `verbose`: show routes on console (default process.env.NODE_ENV !== 'production' )
+- `options`: RouterOptions { caseSensitive/mergeParams/strict }
 
 ## Examples
 
@@ -75,6 +77,9 @@ app.use('/api', fileBased({
 If you export functions named e.g. `get`, `post`, `put`, `delete`/`del` [etc.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) those will get matched their corresponding http method automatically.
 
 ```js
+
+module.exports.priority = 1; // kind of like a z-index for your routes.
+
 /**
  * @param {Express.Request} req
  * @param {Express.Response} res
@@ -85,6 +90,12 @@ If you export functions named e.g. `get`, `post`, `put`, `delete`/`del` [etc.](h
  * @param {Express.Response} res
  */module.exports.post = async (req, res) => { ... }
 
+
+/**
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ */module.exports.put = async (req, res) => { ... }
+
 /**
  * @param {Express.Request} req
  * @param {Express.Response} res
@@ -94,8 +105,8 @@ If you export functions named e.g. `get`, `post`, `put`, `delete`/`del` [etc.](h
 /**
  * @param {Express.Request} req
  * @param {Express.Response} res
- * you can still use a wildcard default export in addition
- */module.exports = async (req, res) => { ... }
+ * use default for _all
+ */module.exports.default = async (req, res) => { ... }
 ```
 
 **Note:** Named method exports gain priority over wildcard exports (= default exports).

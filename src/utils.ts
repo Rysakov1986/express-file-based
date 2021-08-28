@@ -5,8 +5,11 @@ import config from './config';
 
 import type { IFileResult, IRoute } from "./types"
 
-const regBackets = /\[([^}]*)\]/g;
+export const VerboseLogger = (a: string, b: string, c: number) => {
+  console.log(`%s \r\t %s \r\t\t\t\t\t${c}`, a, b)
+}
 
+const regBackets = /\[([^}]*)\]/g;
 const setBrackets = (x: string) => {
   return regBackets.test(x) ? x.replace(regBackets, (_, s) => `:${s}`) : x
 }
@@ -14,9 +17,7 @@ const setBrackets = (x: string) => {
 export const walk = (directory: string, relative: string[] = [""]) => {
   const results: IFileResult[] = []
 
-  const files = fs.readdirSync(directory)
-
-  for (const file of files) {
+  for (const file of fs.readdirSync(directory)) {
     const filePath = path.join(directory, file)
     const stat = fs.statSync(filePath)
 
@@ -31,12 +32,11 @@ export const walk = (directory: string, relative: string[] = [""]) => {
     }
   }
 
-  return results.sort((p, n) => p.path.length - n.path.length)
+  return results;
 }
 
 export const generateRoutes = (files: IFileResult[]) => {
   const routes: IRoute[] = []
-
   for (const file of files) {
     const parsed = path.parse(file.relative)
 
@@ -56,10 +56,10 @@ export const generateRoutes = (files: IFileResult[]) => {
 
     const url = setBrackets(dir) + setBrackets(name)
     const exported = require(path.join(file.path, file.name))
-    routes.push({ url, exported })
+    routes.push({ url, exported: { ...exported, priority: exported.priority || 0 } })
   }
 
-  return routes
+  return routes.sort((p, n) => n.exported.priority - p.exported.priority)
 }
 
 export const getHandlers = handler => {

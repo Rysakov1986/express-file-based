@@ -1,3 +1,5 @@
+import { RouterOptions } from 'express';
+
 export interface IFileResult {
   name: string
   relative: string
@@ -7,6 +9,7 @@ export interface IFileResult {
 export interface IRoute {
   url: string
   exported: {
+    priority?: number 
     default?: any
     get?: any
     post?: any
@@ -20,4 +23,6 @@ export interface IOptions {
   directory?: string
   methodExports?: string[]
   verbose?: boolean
+  base?: string
+  options?: RouterOptions
 }
